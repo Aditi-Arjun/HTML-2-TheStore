@@ -1,0 +1,279 @@
+<html>
+     <head>
+	      <title> A 'n' A Electronics </title>
+		  <link rel=stylesheet type="text/css" href="MyStyle.css">
+		 
+		  
+		  <style> 
+		  
+			table, tr, th, td{
+				border: 		2px solid #005ce6;
+				text-align:		center;
+				font-size:		20px;
+				text-shadow: 	2px 2px #00ffff;
+				border-radius:	10px;
+			}
+		  </style>
+		  <script>
+				//global variables 
+				var productName=["Doors Depth Con", "MePhoneY", "MePad 2.26", "Mango Watch", "Trikon F746.63 Camera" ];
+				var price= [1372.89, 784.54, 194.56, 83.29, 257.13 ];
+				var description=["You have heard Windows Laptop Surface Pro, but this is so much more better than that <br>knock off. First of all, it's $217.11 cheaper. And it kind of works. Most of the times.<br> This laptop has more features than you can think. (PEN NOT INCLUDED)", 
+								"Unlike the IPhone X, this" + " phone" +" doesnt need a screen. Or a keyboard. In fact,<br> some may say its just a hunk of metal, which isn't wrong, but it's still better." ,
+								"I'm going to be honest, the mePad 1 and 2 were bad. But 0.26 versions later, <br>we have something that almost turns on. Every once in a while.", 
+								"One size fits about 23.7% of the population! This watch may not tell the time<br> or work at all, but it looks cool. Comes in neon pink, neon green, and mango.<br> (Green and Mango color not shown.)",
+								"We all love to take pictures. Savor the memories of those we love, especially<br> when they are no longer with us. For some of us, it's a parent or a sibling. <br>For others it's your aunt Bertha who always gave you money <br>on the major holidays but then left you nothing in their will because<br> your cousin FRED was the 'favorite' and 'successful' one and- where was I?<br> Oh, right. This is better than the Nikon D350. </td>"];
+				var picture=[ "Laptop.jpg", "Iphone.jpg", "ipad.jpg", "MangoWatchPink.jpg", "camera.jpg"];
+				
+				
+				
+			function Filltable(){
+				var output = "";
+				output+= "<tr><th>Name</th><th>Price($)</th><th>Description</th><th>Image</th</tr>";
+				for(i=0; i < productName.length; i++){
+					output+="<tr>";
+					output+="<td>" + productName[i] + "</td>";
+					output+="<td>" + price[i] + "</td>";
+					output+="<td>" + description[i] + "</td>";
+					output+="<td><img height=100 src=\'" +  picture[i] + "\'></td>";
+					output+="</tr>";
+				}
+				idtable.innerHTML = output;
+			}			
+			
+			function showItemsWithName() {
+				  var input, filter, table, tr, td, i, txtValue;
+				  input = document.getElementById("idTxtSearchName");
+				  filter = input.value.toUpperCase();
+				  table = document.getElementById("idtable");
+				  tr = table.getElementsByTagName("tr");
+				    for (i = 0; i < tr.length; i++) {
+						td = tr[i].getElementsByTagName("td")[0];
+						if (td) {
+							txtValue = td.textContent || td.innerText;
+							if (txtValue.toUpperCase().indexOf(filter) > -1) {
+								tr[i].style.display = "";
+							} else {
+								tr[i].style.display = "none";
+							}
+						}       
+				  }
+			}
+			
+			function showItemsWithPrice(){
+				var output = "";
+					for (var i=0; i<price.length; i++){
+						if(price[i] >= idMinPrice.value && price[i] <= idMaxPrice.value){
+							output += "<tr>";
+							output += "<td>" + productName[i] + "</td>";
+							output += "<td>" + price[i] + "</td>";
+							output += "<td>" + description[i] + "</td>";
+							output += "<td><img height=100 src=\'" + picture[i] + "\'></td>";
+							output += "</tr>";
+						}
+						
+						idtable.innerHTML = output;
+					}
+			}
+			
+			//CONTACT INFO 
+			function contactInfo(){
+				var output="CONTACT INFO:" + "<br>";
+					output+="Call us: (312)-555-3652"+ "<br>";
+					output+="Email us: AnAElectronics.gmail.com";
+				
+				idDivContact.innerHTML = output;
+				Filltable();
+				
+			}			
+							
+			
+			function Sort(){
+				if(idSelect.value == "Sort By Name (A to Z)"){
+					SortNameAZ();
+				}
+				
+				else if(idSelect.value == "Sort By Name (Z to A)"){
+					SortNameZA();
+				}
+				else if(idSelect.value == "Sort By Price (Low to High)"){
+					SortPriceLH();
+				}
+				else{
+					SortPriceHL();
+				}
+			}
+			
+			//this function sorts the array from name A to Z 
+			function SortNameAZ(){
+				bubblesort(productName);
+				Filltable();
+				
+			}
+	
+			//This function sorts the arrays from name Z to A 
+			function SortNameZA(){
+				bubblesortBack(productName);
+				Filltable();
+			}
+
+			//This function sorts the arrays from price low to high 
+			function SortPriceLH(){
+				bubblesort(price);
+				Filltable();
+			}
+			
+			//This function sorts the arrays from price high to low 
+			function SortPriceHL(){
+				bubblesortBack(price);
+				Filltable();
+			}
+			
+			//HELPER FUNCTION 
+			function bubblesortBack(inputArray){
+				var arraySize = inputArray.length;
+				
+				//if the given array has less than 2 elements, then it's already sorted!
+				if (arraySize < 2){
+					return inputArray;
+										
+				}
+				
+				//Keep making passess through the array comaring/ swapping adjacent element. 
+				//we do this until we are able to make a pass through the array without 
+				//having to make any swaps - since that must mean that the array is sorted
+				
+				//this variable tracks weather the current pass will be the last one
+				var sortDone;
+				
+				//Do-while is very important for sorting 
+				do{
+					//Assume that the array is in the sorted order, until we 
+					//are proven wrong (ie. we have to swap elements)
+					sortDone = true;
+					
+					for(var i = 0; i < arraySize-1; i++)
+					{ 
+						if(inputArray[i] < inputArray[i+1])
+						{
+							//The array was not in sorted order, so we must 
+							//keep making passess through the array
+							sortDone = false;
+							
+							//very important
+							//swap the two out-of-order elements 
+							var temp1 = productName[i];
+							productName[i] = productName[i+1];
+							productName[i+1] = temp1;
+							
+							var temp2 = price[i];
+							price[i] = price[i+1];
+							price[i+1] = temp2;
+							
+							var temp3 = description[i];
+							description[i] = description[i+1];
+							description[i+1] = temp3;
+							
+							var temp4 = picture[i];
+							picture[i] = picture[i+1];
+							picture[i+1] = temp4;
+						}
+					}
+				
+				} while (sortDone == false)
+				
+				//At his point, since we broke out of the while loop, it must 
+				//mean that array is sorted 
+				return inputArray;
+			}
+			
+			//HELPER FUNCTION 
+			function bubblesort(inputArray){
+				var arraySize = inputArray.length;
+				
+				//if the given array has less than 2 elements, then it's already sorted!
+				if (arraySize < 2){
+					return inputArray;
+										
+				}
+				
+				//Keep making passess through the array comaring/ swapping adjacent element. 
+				//we do this until we are able to make a pass through the array without 
+				//having to make any swaps - since that must mean that the array is sorted
+				
+				//this variable tracks weather the current pass will be the last one
+				var sortDone;
+				
+				//Do-while is very important for sorting 
+				do{
+					//Assume that the array is in the sorted order, until we 
+					//are proven wrong (ie. we have to swap elements)
+					sortDone = true;
+					
+					for(var i = 0; i < arraySize-1; i++)
+					{ 
+						if(inputArray[i] >inputArray[i+1])
+						{
+							//The array was not in sorted order, so we must 
+							//keep making passess through the array
+							sortDone = false;
+							
+							//very important
+							//swap the two out-of-order elements 
+							var temp1 = productName[i];
+							productName[i] = productName[i+1];
+							productName[i+1] = temp1;
+							
+							var temp2 = price[i];
+							price[i] = price[i+1];
+							price[i+1] = temp2;
+							
+							var temp3 = description[i];
+							description[i] = description[i+1];
+							description[i+1] = temp3;
+							
+							var temp4 = picture[i];
+							picture[i] = picture[i+1];
+							picture[i+1] = temp4;
+						}
+					}
+				
+				} while (sortDone == false)
+				
+				//At his point, since we broke out of the while loop, it must 
+				//mean that array is sorted 
+				return inputArray;
+			}
+			
+		  </script>
+	 </head>
+	 
+	 <body onload="contactInfo()">
+		
+		<img src="myLogo.jpg" width="400" height="200" class="MyImg" align="center"/><br><br>
+		
+		 <a href="AboutUsFile.html" class="Mybutton">About Us</a><br><br>
+		 
+		<select id="idSelect" class="selectStyle" align="center" >
+			<option>Sort By: </option> 
+			<option>Sort By Name (A to Z)</option>
+			<option>Sort By Name (Z to A)</option>
+			<option>Sort By Price (Low to High)</option>
+			<option>Sort By Price (High to Low) </option>
+		</select><br>
+		<input type="button" value="Sort" onclick="Sort()" class="Mybutton"/>
+		<br><br>
+		<input type="text" id="idTxtSearchName" class="selectStyle" />
+		<input type=button value="Search Name" onclick="showItemsWithName()" class="Mybutton" />
+		<br>
+		<input type=text id="idMinPrice" placeholder="Enter a minimun value" class="selectStyle"/>
+		<input type=text id="idMaxPrice" placeholder="Enter a maximum value" class="selectStyle"/>
+		<input type=button value="Search Price" onclick="showItemsWithPrice()" class="Mybutton" />
+		<br><br>
+		<table align="center" class="MyStyle" id="idtable" ></table>
+		
+		<br><br>
+		<div id="idDivContact" class="ContactStyle"><div><br>
+		<br><br><br>
+	 </body>
+</html>
